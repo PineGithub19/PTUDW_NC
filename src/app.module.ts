@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ActorsModule } from './actors/actors.module';
 import { Actor } from './actors/entities/actor.entity';
+import { FilmsModule } from './films/films.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { Actor } from './actors/entities/actor.entity';
       autoLoadEntities: true,
     }),
     ActorsModule,
+    FilmsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
