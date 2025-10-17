@@ -10,6 +10,7 @@ import {
   Patch,
   Post,
   Put,
+  UseInterceptors,
 } from '@nestjs/common';
 import { FilmsService } from './films.service';
 import { CreateFilmDto } from './dto/create-film.dto';
@@ -22,7 +23,9 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { RATINGS, SPECIAL_FEATURES } from './enums/films.enum';
+import { LoggerInterceptor } from 'src/interceptors/logger/logger.interceptor';
 
+@UseInterceptors(LoggerInterceptor)
 @ApiTags('Films Controller')
 @Controller('films')
 export class FilmsController {
