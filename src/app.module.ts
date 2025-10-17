@@ -6,6 +6,9 @@ import { ActorsModule } from './actors/actors.module';
 import { Actor } from './actors/entities/actor.entity';
 import { FilmsModule } from './films/films.module';
 import { Films } from './films/entities/films.entity';
+import { LoggerController } from './logger/logger/logger.controller';
+import { LoggerService } from './logger/logger/logger.service';
+import { LoggerModule } from './logger/logger/logger.module';
 
 @Module({
   imports: [
@@ -22,8 +25,9 @@ import { Films } from './films/entities/films.entity';
     }),
     ActorsModule,
     FilmsModule,
+    LoggerModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [AppController, LoggerController],
+  providers: [AppService, LoggerService],
 })
 export class AppModule {}
