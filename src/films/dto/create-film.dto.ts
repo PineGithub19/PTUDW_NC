@@ -1,11 +1,24 @@
-import { IsEnum, IsInt, IsPositive, IsString, Max, Min } from 'class-validator';
+import {
+  IsEnum,
+  IsInt,
+  IsPositive,
+  IsString,
+  Max,
+  Min,
+  MaxLength,
+  MinLength,
+} from 'class-validator';
 import { RATINGS, SPECIAL_FEATURES } from '../enums/films.enum';
 
 export class CreateFilmDto {
   @IsString()
+  @MinLength(2, { message: 'Title must be at least 2 characters long' })
+  @MaxLength(100, { message: 'Title cannot exceed 100 characters' })
   title: string;
 
   @IsString()
+  @MinLength(10, { message: 'Description must be at least 10 characters long' })
+  @MaxLength(500, { message: 'Description cannot exceed 500 characters' })
   description: string;
 
   @IsInt()
