@@ -3,6 +3,8 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
 
 import { AppModule } from './app.module';
+// import { LogstashService } from './logstash/logstash.service';
+// import { LoggerInterceptor } from './interceptors/logger/logger.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -26,6 +28,10 @@ async function bootstrap() {
       },
     }),
   );
+
+  // use global interceptor
+  // const logger = app.get(LogstashService);
+  // app.useGlobalInterceptors(new LoggerInterceptor(logger));
 
   await app.listen(process.env.PORT ?? 3000);
 }

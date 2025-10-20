@@ -6,11 +6,13 @@ import {
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { Observable, tap } from 'rxjs';
-
+// import { LogstashService } from 'src/logstash/logstash.service';
 import { appLogger } from 'src/utils/write-log';
 
 @Injectable()
 export class LoggerInterceptor implements NestInterceptor {
+  // constructor(private readonly logger: LogstashService) {}
+
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     const http = context.switchToHttp();
     const request = http.getRequest<Request>();
@@ -20,7 +22,6 @@ export class LoggerInterceptor implements NestInterceptor {
     return next.handle().pipe(
       tap((value) => {
         const duration = Date.now() - startTime;
-
         const logObj = {
           requestInfo: {
             browser: request.get('user-agent'),
@@ -36,14 +37,13 @@ export class LoggerInterceptor implements NestInterceptor {
           responseInfo: {
             statusCode: response.statusCode,
             // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-            data: value,
+            data: JSON.stringify(value),
           },
           meta: {
             requestDate: new Date(startTime).toISOString(),
             durationMs: duration,
           },
         };
-
         appLogger.info(logObj);
       }),
     );

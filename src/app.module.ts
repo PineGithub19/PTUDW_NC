@@ -9,6 +9,8 @@ import { Films } from './films/entities/films.entity';
 import { LoggerController } from './logger/logger/logger.controller';
 import { LoggerService } from './logger/logger/logger.service';
 import { LoggerModule } from './logger/logger/logger.module';
+import { LogstashModule } from './logstash/logstash.module';
+import { LogstashService } from './logstash/logstash.service';
 
 @Module({
   imports: [
@@ -26,8 +28,9 @@ import { LoggerModule } from './logger/logger/logger.module';
     ActorsModule,
     FilmsModule,
     LoggerModule,
+    LogstashModule,
   ],
   controllers: [AppController, LoggerController],
-  providers: [AppService, LoggerService],
+  providers: [AppService, LoggerService, LogstashService],
 })
 export class AppModule {}

@@ -9,8 +9,8 @@ const fileRotateTransport = new transports.DailyRotateFile({
   filename: 'logger_%DATE%.log',
   datePattern: 'YYYY-MM-DD',
   zippedArchive: false,
-  maxSize: '1k',
-  maxFiles: '2',
+  maxSize: '20M',
+  maxFiles: '10',
 });
 
 export const appLogger = createLogger({
