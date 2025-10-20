@@ -6,12 +6,12 @@ import {
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { Observable, tap } from 'rxjs';
-// import { LogstashService } from 'src/logstash/logstash.service';
-import { appLogger } from 'src/utils/write-log';
+import { LogstashService } from 'src/logstash/logstash.service';
+// import { appLogger } from 'src/utils/write-log';
 
 @Injectable()
 export class LoggerInterceptor implements NestInterceptor {
-  // constructor(private readonly logger: LogstashService) {}
+  constructor(private readonly logger: LogstashService) {}
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     const http = context.switchToHttp();
@@ -44,7 +44,7 @@ export class LoggerInterceptor implements NestInterceptor {
             durationMs: duration,
           },
         };
-        appLogger.info(logObj);
+        this.logger.log(logObj);
       }),
     );
   }
