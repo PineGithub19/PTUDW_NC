@@ -57,6 +57,21 @@ export class FilmsController {
     return this.filmsService.findOne(id);
   }
 
+  @Get('/actor/:film_id')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({
+    summary: 'Get Actor by Film Id',
+    description: 'Retrieve detailed information about an actor.',
+  })
+  @ApiResponse({ status: 200, description: 'Returns the actor data.' })
+  @ApiResponse({
+    status: 404,
+    description: 'Actor not found.',
+  })
+  findActorByFilm(@Param('film_id', ParseIntPipe) film_id: number) {
+    return this.filmsService.findActorByFilm(film_id);
+  }
+
   @Post()
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({

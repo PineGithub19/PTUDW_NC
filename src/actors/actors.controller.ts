@@ -9,11 +9,13 @@ import {
   HttpCode,
   HttpStatus,
   ParseIntPipe,
+  UseGuards,
 } from '@nestjs/common';
 import { ActorsService } from './actors.service';
 import { CreateActorDto } from './dto/create-actor.dto';
 import { UpdateActorDto } from './dto/update-actor.dto';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { JwtInternalAuthGuard } from 'src/auth/guard/jwt-internal-auth/jwt-internal-auth.guard';
 
 @ApiTags('Actors Controller')
 @Controller('actors')
@@ -48,6 +50,7 @@ export class ActorsController {
     return this.actorsService.findAll();
   }
 
+  @UseGuards(JwtInternalAuthGuard)
   @Get(':id')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({
@@ -62,7 +65,9 @@ export class ActorsController {
     status: 404,
     description: 'Actor not found.',
   })
-  findOne(@Param('id', ParseIntPipe) id: string) {
+  findOne(@Param('id', ParseIntPipe) id: number) {
+    console.log(id);
+
     return this.actorsService.findOne(+id);
   }
 

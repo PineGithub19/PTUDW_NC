@@ -11,9 +11,14 @@ import { LoggerService } from './logger/logger/logger.service';
 import { LoggerModule } from './logger/logger/logger.module';
 import { LogstashModule } from './logstash/logstash.module';
 import { LogstashService } from './logstash/logstash.service';
+import { AuthModule } from './auth/auth/auth.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: 'localhost',
@@ -29,6 +34,7 @@ import { LogstashService } from './logstash/logstash.service';
     FilmsModule,
     LoggerModule,
     LogstashModule,
+    AuthModule,
   ],
   controllers: [AppController, LoggerController],
   providers: [AppService, LoggerService, LogstashService],
