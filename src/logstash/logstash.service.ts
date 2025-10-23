@@ -16,18 +16,18 @@ export class LogstashService implements OnModuleDestroy {
   private connect() {
     this.client.connect(this.port, this.host, () => {
       this.isConnected = true;
-      console.log(`✅ Connected to Logstash at ${this.host}:${this.port}`);
+      console.log(`Connected to Logstash at ${this.host}:${this.port}`);
     });
 
     this.client.on('error', (err) => {
       this.isConnected = false;
-      console.error('❌ Logstash connection error:', err.message);
+      console.error('Logstash connection error:', err.message);
       setTimeout(() => this.connect(), 5000);
     });
 
     this.client.on('close', () => {
       this.isConnected = false;
-      console.warn('⚠️ Logstash connection closed, reconnecting...');
+      console.warn('Logstash connection closed, reconnecting...');
       setTimeout(() => this.connect(), 5000);
     });
   }
