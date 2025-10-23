@@ -1,4 +1,9 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 import { RATINGS, SPECIAL_FEATURES } from '../enums/films.enum';
 
@@ -40,6 +45,6 @@ export class Films {
   @Column({ type: 'set', enum: SPECIAL_FEATURES, nullable: true })
   special_features: SPECIAL_FEATURES[];
 
-  @Column({ type: 'timestamp' })
+  @UpdateDateColumn()
   last_update: string;
 }

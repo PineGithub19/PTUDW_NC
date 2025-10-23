@@ -6,6 +6,11 @@ import { ActorsModule } from './actors/actors.module';
 import { Actor } from './actors/entities/actor.entity';
 import { FilmsModule } from './films/films.module';
 import { Films } from './films/entities/films.entity';
+import { LoggerController } from './logger/logger/logger.controller';
+import { LoggerService } from './logger/logger/logger.service';
+import { LoggerModule } from './logger/logger/logger.module';
+import { LogstashModule } from './logstash/logstash.module';
+import { LogstashService } from './logstash/logstash.service';
 
 @Module({
   imports: [
@@ -22,8 +27,10 @@ import { Films } from './films/entities/films.entity';
     }),
     ActorsModule,
     FilmsModule,
+    LoggerModule,
+    LogstashModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [AppController, LoggerController],
+  providers: [AppService, LoggerService, LogstashService],
 })
 export class AppModule {}

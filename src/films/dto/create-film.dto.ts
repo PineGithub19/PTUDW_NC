@@ -7,6 +7,7 @@ import {
   Min,
   MaxLength,
   MinLength,
+  IsOptional,
 } from 'class-validator';
 import { RATINGS, SPECIAL_FEATURES } from '../enums/films.enum';
 
@@ -32,6 +33,7 @@ export class CreateFilmDto {
 
   @IsPositive()
   @IsInt()
+  @IsOptional()
   original_language_id: number;
 
   @IsPositive()
