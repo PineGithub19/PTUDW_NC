@@ -10,12 +10,14 @@ import {
   Patch,
   Post,
   Put,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { FilmsService } from './films.service';
 import { CreateFilmDto } from './dto/create-film.dto';
 import { UpdateFilmDto } from './dto/update-fillm.dto';
 import {
+  ApiBearerAuth,
   ApiBody,
   ApiOperation,
   ApiParam,
@@ -24,6 +26,7 @@ import {
 } from '@nestjs/swagger';
 import { RATINGS, SPECIAL_FEATURES } from './enums/films.enum';
 import { LoggerInterceptor } from 'src/interceptors/logger/logger.interceptor';
+import { JwtExternalAuthGuard } from 'src/auth/guard/jwt-external-auth/jwt-external-auth.guard';
 
 @UseInterceptors(LoggerInterceptor)
 @ApiTags('Films Controller')
@@ -57,19 +60,36 @@ export class FilmsController {
     return this.filmsService.findOne(id);
   }
 
-  @Get('/actor/:film_id')
+  @Get('/:film_id/actors')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({
     summary: 'Get Actor by Film Id',
-    description: 'Retrieve detailed information about an actor.',
+    description: 'Retrieve detailed information about actors.',
   })
-  @ApiResponse({ status: 200, description: 'Returns the actor data.' })
+  @ApiResponse({ status: 200, description: 'Returns the actors data.' })
   @ApiResponse({
     status: 404,
-    description: 'Actor not found.',
+    description: 'Actors not found.',
   })
-  findActorByFilm(@Param('film_id', ParseIntPipe) film_id: number) {
-    return this.filmsService.findActorByFilm(film_id);
+  findActorByFilmId(@Param('film_id', ParseIntPipe) filmId: number) {
+    return this.filmsService.findActorsByFilmId(filmId);
+  }
+
+  @UseGuards(JwtExternalAuthGuard)
+  @Get('/actor/:actor_id')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({
+    summary: 'Get Films by Actor Id',
+    description: 'Retrieve detailed information about films.',
+  })
+  @ApiBearerAuth('access_token')
+  @ApiResponse({ status: 200, description: 'Returns the films data.' })
+  @ApiResponse({
+    status: 404,
+    description: 'Films not found.',
+  })
+  findFilmsByActorId(@Param('actor_id', ParseIntPipe) actorId: number) {
+    return this.filmsService.findFilmsByActorId(actorId);
   }
 
   @Post()

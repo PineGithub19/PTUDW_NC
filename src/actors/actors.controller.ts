@@ -66,8 +66,6 @@ export class ActorsController {
     description: 'Actor not found.',
   })
   findOne(@Param('id', ParseIntPipe) id: number) {
-    console.log(id);
-
     return this.actorsService.findOne(+id);
   }
 

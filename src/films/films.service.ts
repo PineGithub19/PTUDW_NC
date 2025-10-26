@@ -51,27 +51,46 @@ export class FilmsService {
     return film;
   }
 
-  async findActorByFilm(film_id: number) {
+  async findActorsByFilmId(filmId: number) {
     const token = await this.getAuthToken();
-    const response = await this.filmActorRepository.findOne({
+    const response = await this.filmActorRepository.find({
       where: {
-        film_id: film_id,
+        film_id: filmId,
       },
     });
 
     if (!response) throw new NotFoundException('Actor Not Found');
 
-    const actorResponse = await fetch(
-      `http://localhost:3000/actors/${response.actor_id}`,
-      {
-        method: 'GET',
-        headers: { Authorization: `Bearer ${token}` },
-      },
+    const actorResponse = await Promise.all(
+      response.map(async (item) => {
+        try {
+          const res = await fetch(
+            `http://localhost:3000/actors/${item.actor_id}`,
+            {
+              headers: { Authorization: `Bearer ${token}` },
+            },
+          );
+          if (!res.ok)
+            throw new Error(`Failed to fetch actor ${item.actor_id}`);
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+          return await res.json();
+        } catch (err) {
+          console.error(err);
+          return null; // or handle gracefully
+        }
+      }),
     );
 
-    const actorData = await actorResponse.json();
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    return actorResponse;
+  }
 
-    return actorData;
+  async findFilmsByActorId(actorId: number) {
+    return await this.filmActorRepository.find({
+      where: {
+        actor_id: actorId,
+      },
+    });
   }
 
   async createFilm(createFilmDto: CreateFilmDto) {

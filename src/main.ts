@@ -14,7 +14,18 @@ async function bootstrap() {
     .setDescription('The films API description')
     .setVersion('1.0')
     .addTag('films')
+    .addBearerAuth(
+      // Add Bearer authentication
+      {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT', // Or other format like 'OAuth2' if applicable
+        description: 'Enter your Bearer token',
+      },
+      'bearerAuth', // Unique name for the security scheme
+    )
     .build();
+
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, documentFactory);
 

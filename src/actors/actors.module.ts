@@ -6,10 +6,11 @@ import { Actor } from './entities/actor.entity';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule } from '@nestjs/config';
 import jwtConfig from 'src/config/jwt.config';
+import { FilmActor } from 'src/films/entities/film-actor.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Actor]),
+    TypeOrmModule.forFeature([Actor, FilmActor]),
     ConfigModule.forFeature(jwtConfig),
     JwtModule.registerAsync(jwtConfig.asProvider()),
   ],
